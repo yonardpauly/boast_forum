@@ -82,7 +82,7 @@ add_action('wp_footer', 'boastforum_display_footer_scripts');
 function boastforum_form ()
 {
     $content = "";
-    $content .= "<form method='post' action='http://localhost/boast-forum/2018/11/16/thank-you/'>";
+    $content .= "<form method='post' action='http://localhost/wordpress1/thank-you/'>";
     
         $content .= "<input type='text' name='fullname' placeholder='Enter your full name here ..' />";
         $content .= "<br />";
@@ -109,6 +109,14 @@ function set_html_content_type()
     return "text/html";
 }
 
+function validate($data)
+{
+    $data = htmlspecialchars($data);
+    $data = stripcslashes($data);
+    $data = trim($data);
+    return $data;
+}
+
 function boastforum_form_submit()
 {
     global $post, $wpdb;
@@ -119,10 +127,10 @@ function boastforum_form_submit()
         // $subject = "Info Submission";
 
         $body = "";
-        $body .= "Name: ". $_POST['fullname'] ."<br />";
-        $body .= "Email Address: ". $_POST['email'] ."<br />";
-        $body .= "Phone Number: ". $_POST['phone_number'] ."<br />";
-        $body .= "Message: ". $_POST['sms'] ."<br />";
+        $body .= "Name: ". validate($_POST['fullname']) ."<br />";
+        $body .= "Email Address: ". validate($_POST['email']) ."<br />";
+        $body .= "Phone Number: ". validate($_POST['phone_number']) ."<br />";
+        $body .= "Message: ". validate($_POST['sms']) ."<br />";
 
         // add_filter('wp_mail_content_type', 'set_html_content_type');
         // wp_mail($to, $subject, $body);
@@ -140,8 +148,7 @@ function boastforum_form_submit()
         // var_dump($data);
         // wp_insert_comment($data);
 
-        $insertData = $wpdb->get_results("INSERT INTO wp_boast_forum(data) VALUES('$body')");
+        $insertData = $wpdb->get_results("INSERT INTO wp_boast_forum(forum_data, created_at) VALUES('$body', date('Y-m-d H:i:s'))");
     }
 }
 add_action('wp_head', 'boastforum_form_submit');
-

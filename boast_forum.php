@@ -77,3 +77,71 @@ function boastforum_display_footer_scripts()
     echo $footer_script;
 }
 add_action('wp_footer', 'boastforum_display_footer_scripts');
+
+// CONTACT FORM
+function boastforum_form ()
+{
+    $content = "";
+    $content .= "<form method='post' action='http://localhost/boast-forum/2018/11/16/thank-you/'>";
+    
+        $content .= "<input type='text' name='fullname' placeholder='Enter your full name here ..' />";
+        $content .= "<br />";
+
+        $content .= "<input type='text' name='email' placeholder='Enter your email address here ..' />";
+        $content .= "<br />";
+
+        $content .= "<input type='number' name='phone_number' placeholder='Enter your phone number here ..' />";
+        $content .= "<br />";
+
+        $content .= "<textarea name='sms'></textarea>";
+        $content .= "<br />";
+
+        $content .= "<button type='submit' name='submit_info'>Submit</button>";
+        $content .= "<br />";
+
+    $content .= "</form>";
+    return $content;
+}
+add_shortcode('boastforum-form', 'boastforum_form');
+
+function set_html_content_type()
+{
+    return "text/html";
+}
+
+function boastforum_form_submit()
+{
+    global $post, $wpdb;
+
+    if (array_key_exists('submit_info', $_POST)) {
+        // Submit Information via email
+        // $to = "sgy.jerrnardpauly@gmail.com";
+        // $subject = "Info Submission";
+
+        $body = "";
+        $body .= "Name: ". $_POST['fullname'] ."<br />";
+        $body .= "Email Address: ". $_POST['email'] ."<br />";
+        $body .= "Phone Number: ". $_POST['phone_number'] ."<br />";
+        $body .= "Message: ". $_POST['sms'] ."<br />";
+
+        // add_filter('wp_mail_content_type', 'set_html_content_type');
+        // wp_mail($to, $subject, $body);
+        // remove_filter('wp_mail_content_type', 'set_html_content_type');
+
+        // $time = current_time('mysql');
+
+        // $data = array(
+        //     'comment_post_ID' => $post->ID,
+        //     'comment_content' => $body,
+        //     'comment_author_IP' => $_SERVER['REMOTE_ADDR'],
+        //     'comment_date' => $time,
+        //     'comment_approved' => 1,
+        // );
+        // var_dump($data);
+        // wp_insert_comment($data);
+
+        $insertData = $wpdb->get_results("INSERT INTO wp_boast_forum(data) VALUES('$body')");
+    }
+}
+add_action('wp_head', 'boastforum_form_submit');
+

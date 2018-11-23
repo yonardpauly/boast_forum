@@ -173,19 +173,19 @@ function boastforum_form_submit()
             'created_at'. date('Y-m-d H:i:s')
         );
 
-        $time = current_time('mysql');
+        // $time = current_time('mysql');
 
-        $data = array(
-            'comment_post_ID' => $post->ID,
-            'comment_content' => implode(',', $body),
-            'comment_author_IP' => $_SERVER['REMOTE_ADDR'],
-            'comment_date' => $time,
-            'comment_approved' => 1,
-        );
-        var_dump($data);
-        wp_insert_comment($data);
+        // $data = array(
+        //     'comment_post_ID' => $post->ID,
+        //     'comment_content' => implode(',', $body),
+        //     'comment_author_IP' => $_SERVER['REMOTE_ADDR'],
+        //     'comment_date' => $time,
+        //     'comment_approved' => 1,
+        // );
+        // var_dump($data);
+        // wp_insert_comment($data);
 
-        // $insertData = $wpdb->get_results("INSERT INTO wp_boast_forum(forum_data, created_at) VALUES('$body', date('Y-m-d H:i:s'))");
+        $insertData = $wpdb->get_results("INSERT INTO wp_boast_forum(forum_data, created_at) VALUES('$body')");
     }
 }
 add_action('wp_head', 'boastforum_form_submit');

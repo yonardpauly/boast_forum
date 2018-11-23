@@ -16,12 +16,6 @@
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-.text-center {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 /* Modal Content */
 .modal-content {
     background-color: #fefefe;
